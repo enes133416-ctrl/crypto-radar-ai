@@ -34,6 +34,12 @@ class Settings:
     # Risk / filtre eşikleri (Aşama 3'te kullanılacak)
     min_quote_volume_24h: float = 5_000_000.0
     max_spread_pct: float = 0.30
+    min_orderbook_depth_quote: float = 50_000.0
+    max_atr_pct: float = 12.0
+    extreme_funding_rate: float = 0.001
+    critical_funding_rate: float = 0.003
+    min_listing_age_days: int = 30
+    max_spot_futures_price_diff_pct: float = 2.0
     demo_mode: bool = False
     log_level: str = "INFO"
     # Veri toplayıcı (Aşama 2)
@@ -56,6 +62,12 @@ def load_settings(env: dict[str, str] | None = None) -> Settings:
         binance_futures_ws=e.get("BINANCE_FUTURES_WS", d.binance_futures_ws),
         min_quote_volume_24h=float(e.get("MIN_QUOTE_VOLUME_24H", d.min_quote_volume_24h)),
         max_spread_pct=float(e.get("MAX_SPREAD_PCT", d.max_spread_pct)),
+        min_orderbook_depth_quote=float(e.get("MIN_ORDERBOOK_DEPTH_QUOTE", d.min_orderbook_depth_quote)),
+        max_atr_pct=float(e.get("MAX_ATR_PCT", d.max_atr_pct)),
+        extreme_funding_rate=float(e.get("EXTREME_FUNDING_RATE", d.extreme_funding_rate)),
+        critical_funding_rate=float(e.get("CRITICAL_FUNDING_RATE", d.critical_funding_rate)),
+        min_listing_age_days=int(e.get("MIN_LISTING_AGE_DAYS", d.min_listing_age_days)),
+        max_spot_futures_price_diff_pct=float(e.get("MAX_SPOT_FUTURES_PRICE_DIFF_PCT", d.max_spot_futures_price_diff_pct)),
         demo_mode=_bool(e.get("DEMO_MODE"), d.demo_mode),
         log_level=e.get("LOG_LEVEL", d.log_level).upper(),
         collector_enabled=_bool(e.get("COLLECTOR_ENABLED"), d.collector_enabled),
