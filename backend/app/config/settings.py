@@ -36,6 +36,11 @@ class Settings:
     max_spread_pct: float = 0.30
     demo_mode: bool = False
     log_level: str = "INFO"
+    # Veri toplayıcı (Aşama 2)
+    collector_enabled: bool = True
+    max_symbols_per_market: int = 60
+    tracked_intervals: tuple[str, ...] = ("15m", "1h", "4h", "1d")
+    backfill_limit: int = 300
 
 
 def load_settings(env: dict[str, str] | None = None) -> Settings:
@@ -53,6 +58,10 @@ def load_settings(env: dict[str, str] | None = None) -> Settings:
         max_spread_pct=float(e.get("MAX_SPREAD_PCT", d.max_spread_pct)),
         demo_mode=_bool(e.get("DEMO_MODE"), d.demo_mode),
         log_level=e.get("LOG_LEVEL", d.log_level).upper(),
+        collector_enabled=_bool(e.get("COLLECTOR_ENABLED"), d.collector_enabled),
+        max_symbols_per_market=int(e.get("MAX_SYMBOLS_PER_MARKET", d.max_symbols_per_market)),
+        tracked_intervals=tuple(_list(e.get("TRACKED_INTERVALS"), list(d.tracked_intervals))),
+        backfill_limit=int(e.get("BACKFILL_LIMIT", d.backfill_limit)),
     )
 
 

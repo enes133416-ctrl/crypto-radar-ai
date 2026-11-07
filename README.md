@@ -2,7 +2,12 @@
 
 Binance Spot + USDⓈ-M Futures için analiz amaçlı kripto tarayıcı. **Otomatik emir göndermez. Yatırım tavsiyesi değildir; kâr garantisi yoktur.**
 
-Durum: Aşama 1 (proje temeli) — tarama motoru henüz yok.
+Durum: Aşama 2 (Binance veri toplama) — strateji/skor motoru henüz yok.
+
+Veri toplama: Spot ve Futures için coin keşfi (24s hacim filtresi), REST mum geçmişi, WebSocket canlı mumlar, otomatik yeniden bağlanma ve kopma sonrası boşluk onarımı.
+Uç noktalar: `/api/health`, `/api/data-status`, `/api/symbols?market=spot`, `/api/klines/spot/BTCUSDT?interval=15m`.
+Gerçek bağlantı kontrolü (backend klasöründe): `PYTHONPATH=. python ../scripts/check_binance.py`
+Binance bazı ülkelerde/sunucularda HTTP 451 ile erişimi engeller; bu durumda durum ekranında açık hata görünür, sahte veri gösterilmez.
 
 ## Yerel kurulum (Windows)
 Gereksinim: Python 3.12+, Node.js 20+.
