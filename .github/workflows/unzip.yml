@@ -1,1 +1,1 @@
-
+{"name":"Unzip","on":["push","workflow_dispatch"],"permissions":{"contents":"write"},"jobs":{"unzip":{"runs-on":"ubuntu-latest","steps":[{"uses":"actions/checkout@v4"},{"run":"f=$(ls *.zip 2>/dev/null | head -n1)\n[ -n \"$f\" ] || exit 0\nunzip -o \"$f\"\nrm -f \"$f\"\nrm -rf crypto-radar-ai/.github\ncp -r crypto-radar-ai/. .\nrm -rf crypto-radar-ai\ngit config user.name bot\ngit config user.email bot@users.noreply.github.com\ngit add -A\ngit commit -m 'Proje dosyalari' || exit 0\ngit push"}]}}}
