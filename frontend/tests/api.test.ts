@@ -7,7 +7,7 @@ describe("fetchHealth", () => {
     expect((await fetchHealth("http://x")).status).toBe("ok");
   });
   it("HTTP hatasında hata fırlatır", async () => {
-    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: false, status: 500 }));
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: false, status: 500, json: async () => ({ detail: "Backend hatası: HTTP 500" }) }));
     await expect(fetchHealth("http://x")).rejects.toThrow("HTTP 500");
   });
 });

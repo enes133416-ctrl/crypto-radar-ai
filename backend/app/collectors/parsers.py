@@ -6,7 +6,7 @@ import logging
 from typing import Any
 
 from .models import (
-    Candle, FundingRate, Market, OpenInterest, OrderBookSummary, SymbolInfo, TakerRatio, Ticker24h,
+    Candle, FundingRate, LongShortRatio, Market, OpenInterest, OrderBookSummary, SymbolInfo, TakerRatio, Ticker24h,
 )
 
 log = logging.getLogger(__name__)
@@ -171,3 +171,15 @@ def parse_taker_ratio(data: Any, symbol: str) -> list[TakerRatio]:
                            sell_volume=_f(d["sellVol"], "sellVol"), timestamp=_i(d["timestamp"], "timestamp")) for d in data]
     except (KeyError, TypeError):
         raise DataError("takerlongshortRatio kaydı geçersiz") from None
+
+
+def parse_long_short_ratio(data: Any, symbol: str) -> list[LongShortRatio]:
+    if not isinstance(data, list):
+        raise DataError("long/short ratio yanıtı liste değil")
+    try:
+        return [LongShortRatio(symbol=symbol, long_short_ratio=_f(d["longShortRatio"], "longShortRatio"),
+                               long_account=_f(d["longAccount"], "longAccount"),
+                               short_account=_f(d["shortAccount"], "shortAccount"),
+                               timestamp=_i(d["timestamp"], "timestamp")) for d in data]
+    except (KeyError, TypeError):
+        raise DataError("long/short ratio kaydı geçersiz") from None

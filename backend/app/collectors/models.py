@@ -103,3 +103,12 @@ class TakerRatio:
     buy_volume: float
     sell_volume: float
     timestamp: int
+
+
+@dataclass(frozen=True)
+class LongShortRatio:
+    symbol: str
+    long_short_ratio: float
+    long_account: float
+    short_account: float
+    timestamp: int

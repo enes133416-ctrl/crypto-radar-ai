@@ -1,6 +1,20 @@
 services:
-  backend:
-    build: ./backend
-    env_file: .env
-    ports: ["8000:8000"]
-    volumes: ["./data:/app/data"]
+  crypto-radar:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - path: .env
+        required: false
+    ports:
+      - "8000:8000"
+    volumes:
+      - radar_data:/app/data
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: sqlite:////app/data/crypto_radar.db
+      MODEL_PATH: /app/data/models/opportunity_models.joblib
+      CORS_ORIGINS: http://localhost:8000,http://127.0.0.1:8000
+
+volumes:
+  radar_data:

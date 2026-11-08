@@ -1,0 +1,2 @@
+# Kökten kurulum için tam, transitive bağımlılıkları sabitlenmiş kilit:
+-r backend/requirements-lock.txt

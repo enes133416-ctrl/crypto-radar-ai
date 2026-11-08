@@ -6,10 +6,10 @@ import logging
 import time
 from typing import Any
 
-from .models import FundingRate, Market, OpenInterest, OrderBookSummary, SymbolInfo, TakerRatio, Ticker24h, Candle
+from .models import FundingRate, LongShortRatio, Market, OpenInterest, OrderBookSummary, SymbolInfo, TakerRatio, Ticker24h, Candle
 from .parsers import (
-    parse_depth, parse_exchange_info, parse_funding_rates, parse_kline_row, parse_open_interest,
-    parse_taker_ratio, parse_tickers,
+    parse_depth, parse_exchange_info, parse_funding_rates, parse_kline_row, parse_long_short_ratio,
+    parse_open_interest, parse_taker_ratio, parse_tickers,
 )
 from .rate_limiter import WeightLimiter
 
@@ -143,6 +143,24 @@ class BinanceRestClient:
     async def funding_rates(self, symbol: str, limit: int = 10) -> list[FundingRate]:
         self._require_futures()
         return parse_funding_rates(await self._get("/fapi/v1/fundingRate", {"symbol": symbol, "limit": limit}, weight=2))
+
+    async def global_long_short_ratio(self, symbol: str, period: str = "5m", limit: int = 30) -> list[LongShortRatio]:
+        self._require_futures()
+        data = await self._get("/futures/data/globalLongShortAccountRatio", {"symbol": symbol, "period": period, "limit": limit}, weight=2)
+        return parse_long_short_ratio(data, symbol)
+
+    async def top_long_short_ratio(self, symbol: str, period: str = "5m", limit: int = 30) -> list[LongShortRatio]:
+        self._require_futures()
+        data = await self._get("/futures/data/topLongShortAccountRatio", {"symbol": symbol, "period": period, "limit": limit}, weight=2)
+        return parse_long_short_ratio(data, symbol)
+
+    async def open_interest_history(self, symbol: str, period: str = "5m", limit: int = 30) -> list[OpenInterest]:
+        self._require_futures()
+        data = await self._get("/futures/data/openInterestHist", {"symbol": symbol, "period": period, "limit": limit}, weight=2)
+        if not isinstance(data, list):
+            from .parsers import DataError
+            raise DataError("openInterestHist yanıtı liste değil")
+        return [OpenInterest(symbol=symbol, open_interest=float(row["sumOpenInterest"]), time=int(row["timestamp"])) for row in data]
 
     async def taker_long_short_ratio(self, symbol: str, period: str = "5m", limit: int = 30) -> list[TakerRatio]:
         self._require_futures()

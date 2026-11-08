@@ -1,0 +1,16 @@
+.git
+.env
+.venv
+**/node_modules
+**/dist
+**/__pycache__
+**/.pytest_cache
+data
+*.db
+*.joblib
+crypto-radar-ai.zip
+frontend/test-results
+frontend/playwright-report
+.github
+docs
+README.md

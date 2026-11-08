@@ -1,0 +1,25 @@
+name: Binance Live Smoke
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  binance:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements-lock.txt
+        working-directory: backend
+      - name: Gerçek Spot/Futures REST kontrolü
+        run: PYTHONPATH=. python ../scripts/check_binance.py
+        working-directory: backend
+        env:
+          BINANCE_SPOT_REST: https://data-api.binance.vision
+        # GitHub runner bölgesi Binance tarafından engellenirse iş başarısız olur;
+        # bu, yerel bağlantı kanıtının yerine geçmez ve açıkça raporlanır.

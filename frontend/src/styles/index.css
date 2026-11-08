@@ -1,3 +1,32 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  * { @apply border-slate-800; }
+  html { color-scheme: dark; }
+  body { @apply m-0 bg-slate-950 font-sans text-slate-200 antialiased; }
+  button, a, input, select { @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500/60; }
+  button, select { @apply cursor-pointer; }
+  ::selection { @apply bg-cyan-500/30 text-cyan-100; }
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-track { background: #020617; }
+  ::-webkit-scrollbar-thumb { background: #334155; border-radius: 8px; }
+}
+
+@layer components {
+  .input { @apply h-10 w-full rounded-lg border border-slate-700 bg-slate-950/80 px-3 text-xs text-slate-200 placeholder:text-slate-600 hover:border-slate-600; }
+  .label { @apply mb-1.5 block text-[10px] font-medium uppercase tracking-wider text-slate-500; }
+  .checkbox { @apply h-4 w-4 rounded border-slate-600 bg-slate-950 accent-cyan-500; }
+  .btn-secondary { @apply inline-flex h-9 items-center gap-2 rounded-lg border border-slate-700 bg-slate-900 px-3 text-xs font-medium text-slate-300 transition hover:border-cyan-700 hover:text-cyan-300; }
+  .btn-icon { @apply grid h-9 w-9 place-items-center rounded-lg border border-slate-800 text-slate-400 hover:bg-slate-800 hover:text-slate-100; }
+}
+
+.shadow-panel { box-shadow: 0 12px 32px rgb(0 0 0 / 0.14); }
+.shadow-live { box-shadow: 0 0 10px #34d399; }
+.bg-slate-925 { background-color: #080f1e; }
+
+@media print {
+  aside, header, button { display: none !important; }
+  .lg\:pl-64 { padding-left: 0 !important; }
+}

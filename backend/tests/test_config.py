@@ -6,13 +6,13 @@ def test_defaults():
     assert s.run_mode == "local"
     assert s.demo_mode is False
     assert "http://localhost:5173" in s.cors_origins
-    assert s.collector_enabled is True and s.tracked_intervals == ("15m", "1h", "4h", "1d")
+    assert s.collector_enabled is True and s.tracked_intervals == ("5m", "15m", "1h", "4h", "1d")
 
 
 def test_env_override():
     s = load_settings({"RUN_MODE": "cloud", "DEMO_MODE": "true", "CORS_ORIGINS": "https://a.com, https://b.com",
-                       "MIN_QUOTE_VOLUME_24H": "123", "COLLECTOR_ENABLED": "false", "TRACKED_INTERVALS": "1h,4h"})
+                       "MIN_QUOTE_VOLUME_24H": "123", "COLLECTOR_ENABLED": "false", "TRACKED_INTERVALS": "15m,1h,4h"})
     assert s.run_mode == "cloud" and s.demo_mode is True
     assert s.cors_origins == ("https://a.com", "https://b.com")
     assert s.min_quote_volume_24h == 123.0 and s.collector_enabled is False
-    assert s.tracked_intervals == ("1h", "4h")
+    assert s.tracked_intervals == ("15m", "1h", "4h")

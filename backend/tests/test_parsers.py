@@ -1,7 +1,7 @@
 from app.collectors.models import Market
 from app.collectors.parsers import (
     DataError, parse_depth, parse_exchange_info, parse_kline_row, parse_tickers, parse_ws_kline,
-    parse_open_interest, parse_funding_rates, parse_taker_ratio,
+    parse_open_interest, parse_funding_rates, parse_long_short_ratio, parse_taker_ratio,
 )
 from tests.helpers import expect_raises, kline_row, ws_kline
 
@@ -84,4 +84,7 @@ def test_futures_stats_parsers():
     assert fr[0].funding_rate == 0.0001
     tr = parse_taker_ratio([{"buySellRatio": "1.2", "buyVol": "10", "sellVol": "8", "timestamp": 9}], "BTCUSDT")
     assert tr[0].buy_sell_ratio == 1.2
+    ls = parse_long_short_ratio([{"longShortRatio": "1.5", "longAccount": "0.6", "shortAccount": "0.4", "timestamp": 10}], "BTCUSDT")
+    assert ls[0].long_short_ratio == 1.5 and ls[0].long_account == 0.6
+    expect_raises(DataError, parse_long_short_ratio, {"symbol": "BTCUSDT"}, "BTCUSDT")
     expect_raises(DataError, parse_open_interest, {"symbol": "X"})

@@ -17,7 +17,7 @@ def test_health_ok():
 def test_endpoints_503_when_collector_off():
     app.state.market_data = None
     c = TestClient(app)
-    assert c.get("/api/data-status").json() == {"enabled": False}
+    assert c.get("/api/data-status").json() == {"enabled": False, "scanner": None}
     assert c.get("/api/symbols").status_code == 503
 
 
